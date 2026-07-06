@@ -1,5 +1,20 @@
 # SmartHire – Applicant Tracking & Recruitment System
 
+![Core Java](https://img.shields.io/badge/Core%20Java-Enabled-orange)
+![JDBC](https://img.shields.io/badge/JDBC-Enabled-blue)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
+![HTML5](https://img.shields.io/badge/HTML5-orange)
+![CSS3](https://img.shields.io/badge/CSS3-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+---
+
+##  Project Overview
+SmartHire is a web-based Recruitment & Applicant Tracking System (ATS) developed using Core Java, JDBC, MySQL, HTML5, CSS3, and JavaScript. The system enables recruiters to manage job postings, candidate applications, interview scheduling, and recruitment workflows while allowing candidates to search and apply for jobs through a modern and responsive web interface.
+
+---
+
 SmartHire is a lightweight, high-performance standalone web application designed for recruitment management and applicant tracking. Built with a zero-dependency Java backend, JDBC, MySQL, and a modern glassmorphic web UI, it serves as a complete platform for recruiters and candidates.
 
 ## Features
@@ -13,6 +28,16 @@ SmartHire is a lightweight, high-performance standalone web application designed
 - **Overview Analytics**: Dynamic dashboard metrics displaying active jobs, application counts, and candidate pipeline progress bars.
 
 ---
+##  Technologies Used
+
+| Technology | Purpose |
+|------------|---------|
+| Core Java | Backend Development |
+| JDBC | Database Connectivity |
+| MySQL | Database Management |
+| HTML5 | User Interface |
+| CSS3 | Styling |
+| JavaScript | Client-side Functionality |
 
 ## Technical Architecture
 
@@ -100,3 +125,45 @@ The script will:
   - *Default Seed HR Credentials*:
     - **Username**: `admin`
     - **Password**: `admin123`
+---
+
+##  Skills Demonstrated
+This project demonstrates practical software development skills including:
+
+- Core Java
+- Object-Oriented Programming (OOP)
+- Collections Framework
+- JDBC
+- SQL (DDL, DML, Joins, Views)
+- HTML5
+- CSS3
+- JavaScript (ES6)
+- CRUD Operations
+- Session Management
+- Authentication & Authorization
+- File Handling (Resume Upload)
+- MVC Architecture
+- Exception Handling
+  
+---
+##  Future Enhancements
+
+The following features can be added in future versions of the project:
+
+- AI-based Resume Screening
+- Resume Parsing using OCR
+- Email Notifications for Interview Updates
+- PDF Offer Letter Generation
+- Role-Based Authentication (Admin, HR, Candidate)
+- Real-time Chat Support
+- Candidate Performance Analytics
+- Interview Feedback Module
+- REST API Integration
+- Spring Boot & Hibernate Migration
+- Cloud Deployment (AWS/Azure)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
