@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHire | HR Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">Smart<span>Hire</span> <span style="font-size:12px; border: 1px solid var(--primary); padding: 2px 6px; border-radius: 4px; color: var(--primary); font-weight:600; margin-left:10px;">HR PORTAL</span></div>
+        <nav id="headerNav" style="display: none; align-items: center; gap: 15px;">
+            <span id="userGreeting" style="font-size: 14px; color: var(--text-secondary);">Welcome, HR Admin</span>
+            <button type="button" class="btn btn-secondary" onclick="handleLogout()">Logout</button>
+        </nav>
+    </header>
+
+    <!-- 1. Login Container -->
+    <div id="loginView" class="login-container">
+        <div class="glass-panel login-card">
+            <div class="login-header">
+                <h2>HR Sign In</h2>
+                <p style="color: var(--text-secondary); font-size: 14px;">Access your candidate pipelines & schedules.</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" required placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required placeholder="Enter password">
+                </div>
+                <div id="loginError" style="color: #ef4444; font-size: 13px; margin-bottom: 15px; display: none;">
+                    Invalid username or password.
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Main Dashboard View (Hidden by default) -->
+    <div id="dashboardView" class="dashboard-wrapper" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <button type="button" class="sidebar-btn active" onclick="switchTab('overview')">📊 Overview</button>
+            <button type="button" class="sidebar-btn" onclick="switchTab('jobs')">💼 Job Manager</button>
+            <button type="button" class="sidebar-btn" onclick="switchTab('candidates')">👥 Candidates</button>
+            <button type="button" class="sidebar-btn" onclick="switchTab('interviews')">📅 Interviews</button>
+            
+            <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center;">
+                <a href="/" target="_blank" style="font-size: 12px; color: var(--text-muted); display: block;">🌐 Open Candidate Portal</a>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            
+            <!-- A. OVERVIEW TAB -->
+            <div id="tab-overview" class="tab-content active">
+                <h2 style="margin-bottom: 20px;">Dashboard Overview</h2>
+                
+                <!-- Metrics Grid -->
+                <div class="stats-grid">
+                    <div class="glass-panel stat-card">
+                        <span class="stat-title">Active Job Postings</span>
+                        <span class="stat-value" id="stat-jobs">0</span>
+                        <div class="stat-bar"><div class="stat-progress" style="width: 60%; background: var(--primary);"></div></div>
+                    </div>
+                    <div class="glass-panel stat-card">
+                        <span class="stat-title">Total Applications</span>
+                        <span class="stat-value" id="stat-candidates">0</span>
+                        <div class="stat-bar"><div class="stat-progress" style="width: 80%; background: #bf55ec;"></div></div>
+                    </div>
+                    <div class="glass-panel stat-card">
+                        <span class="stat-title">Upcoming Interviews</span>
+                        <span class="stat-value" id="stat-interviews">0</span>
+                        <div class="stat-bar"><div class="stat-progress" style="width: 40%; background: #fde047;"></div></div>
+                    </div>
+                </div>
+
+                <!-- Detail Panels -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; flex-wrap: wrap;">
+                    <!-- Status Breakdown Graph -->
+                    <div class="glass-panel">
+                        <h3>Applicant Breakdown</h3>
+                        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 15px;">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                                    <span>Applied</span>
+                                    <span id="break-applied">0</span>
+                                </div>
+                                <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;">
+                                    <div id="bar-applied" style="height:100%; background:var(--color-applied); width:0%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                                    <span>Shortlisted</span>
+                                    <span id="break-shortlisted">0</span>
+                                </div>
+                                <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;">
+                                    <div id="bar-shortlisted" style="height:100%; background:var(--color-shortlisted); width:0%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                                    <span>Selected</span>
+                                    <span id="break-selected">0</span>
+                                </div>
+                                <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;">
+                                    <div id="bar-selected" style="height:100%; background:var(--color-selected); width:0%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                                    <span>Rejected</span>
+                                    <span id="break-rejected">0</span>
+                                </div>
+                                <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;">
+                                    <div id="bar-rejected" style="height:100%; background:var(--color-rejected); width:0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions / Seed Info -->
+                    <div class="glass-panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h3>Quick Actions</h3>
+                            <p style="color: var(--text-secondary); font-size: 13px; margin-top: 8px; margin-bottom: 20px;">Use these shortcuts to jump directly to specific features inside the panel.</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <button type="button" class="btn btn-secondary" onclick="switchTab('jobs')">🆕 Create Job Opening</button>
+                            <button type="button" class="btn btn-secondary" onclick="switchTab('candidates')">🔍 Filter Applicants</button>
+                            <button type="button" class="btn btn-secondary" onclick="switchTab('interviews')">⏰ Schedule Interview</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- B. JOBS TAB -->
+            <div id="tab-jobs" class="tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Job Postings Manager</h2>
+                    <button type="button" class="btn btn-primary" onclick="openJobModal()">Post New Job</button>
+                </div>
+
+                <div class="glass-panel" style="padding:0;">
+                    <div class="table-responsive" style="border:none; margin:0;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Job Title</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th>Date Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jobsTableBody">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- C. CANDIDATES TAB -->
+            <div id="tab-candidates" class="tab-content">
+                <h2 style="margin-bottom: 20px;">Applicant Tracking & Pipeline</h2>
+                
+                <!-- Filtering Bar -->
+                <div class="glass-panel filter-bar">
+                    <div class="filter-item">
+                        <label style="display:block; font-size:11px; margin-bottom:4px; color:var(--text-secondary);">Search Name/Skills</label>
+                        <input type="text" id="candSearch" class="form-control" placeholder="Search applicant...">
+                    </div>
+                    <div class="filter-item">
+                        <label style="display:block; font-size:11px; margin-bottom:4px; color:var(--text-secondary);">Filter Job</label>
+                        <select id="candJobFilter" class="form-control">
+                            <option value="0">All Jobs</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label style="display:block; font-size:11px; margin-bottom:4px; color:var(--text-secondary);">Filter Status</label>
+                        <select id="candStatusFilter" class="form-control">
+                            <option value="All">All Statuses</option>
+                            <option value="Applied">Applied</option>
+                            <option value="Shortlisted">Shortlisted</option>
+                            <option value="Selected">Selected</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Candidates Table -->
+                <div class="glass-panel" style="padding:0;">
+                    <div class="table-responsive" style="border:none; margin:0;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Candidate Name</th>
+                                    <th>Target Position</th>
+                                    <th>Contact Info</th>
+                                    <th>Experience</th>
+                                    <th>Skills</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="candidatesTableBody">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- D. INTERVIEWS TAB -->
+            <div id="tab-interviews" class="tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Interview Schedules</h2>
+                    <button type="button" class="btn btn-primary" onclick="openScheduleModal()">Schedule New Interview</button>
+                </div>
+
+                <div class="glass-panel" style="padding: 24px;">
+                    <h3>Upcoming Calendar</h3>
+                    <div id="interviewsList" class="interview-list">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal: Create Job Posting -->
+    <div id="jobModal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3>Post New Job Opening</h3>
+                <button type="button" class="close-btn" onclick="closeJobModal()">&times;</button>
+            </div>
+            <form id="jobForm">
+                <div class="form-group">
+                    <label for="jobTitleInput">Job Title *</label>
+                    <input type="text" id="jobTitleInput" class="form-control" required placeholder="e.g. Senior Backend Engineer">
+                </div>
+                <div class="form-group">
+                    <label for="jobDeptInput">Department *</label>
+                    <input type="text" id="jobDeptInput" class="form-control" required placeholder="e.g. Engineering, Sales, HR">
+                </div>
+                <div class="form-group">
+                    <label for="jobDescInput">Description *</label>
+                    <textarea id="jobDescInput" class="form-control" required placeholder="Provide a summary of the responsibilities and scope..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="jobReqsInput">Requirements (Comma separated or bullet points) *</label>
+                    <textarea id="jobReqsInput" class="form-control" required placeholder="e.g. 5+ years experience, Java 17, Spring Boot, MySQL..."></textarea>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeJobModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveJobBtn">Post Job</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Schedule Interview -->
+    <div id="scheduleModal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3>Schedule Interview</h3>
+                <button type="button" class="close-btn" onclick="closeScheduleModal()">&times;</button>
+            </div>
+            <form id="scheduleForm">
+                <div class="form-group">
+                    <label for="scheduleCandidateSelect">Select Candidate *</label>
+                    <select id="scheduleCandidateSelect" class="form-control" required>
+                        <option value="">-- Choose Candidate --</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="scheduleJobSelect">Target Position *</label>
+                    <select id="scheduleJobSelect" class="form-control" required disabled>
+                        <option value="">-- Select Candidate First --</option>
+                    </select>
+                    <input type="hidden" id="scheduleJobIdHidden">
+                </div>
+
+                <div class="form-group">
+                    <label for="scheduleDate">Date & Time *</label>
+                    <input type="datetime-local" id="scheduleDate" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="scheduleMode">Interview Mode *</label>
+                    <select id="scheduleMode" class="form-control" required>
+                        <option value="Online">Online Video Call</option>
+                        <option value="In-Person">In-Person Office Visit</option>
+                        <option value="Telephone">Telephone Call</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="scheduleDetails">Interview details / link</label>
+                    <textarea id="scheduleDetails" class="form-control" placeholder="e.g. Google Meet link: meet.google.com/abc-defg-hij"></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeScheduleModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="scheduleSubmitBtn">Schedule</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">Operation completed successfully.</div>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>
